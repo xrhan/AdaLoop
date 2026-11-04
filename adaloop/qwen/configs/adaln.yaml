@@ -1,0 +1,53 @@
+schema_version: 1
+backend: qwen2.5-vl
+base_model: Qwen/Qwen2.5-VL-3B-Instruct
+base_revision: 66285546d2b821cf421d4f5eb2576359d3770cd3
+variant: adaln
+adaptive_span: [2, 14]
+train_depth: 1
+vision_round_mode: latent_carry
+preprocessing:
+  max_length: 2048
+  min_pixels: 12544
+  max_pixels: 451584
+lora:
+  rank: 64
+  alpha: 128
+  dropout: 0.0
+  target_modules: [q_proj, k_proj, v_proj, o_proj]
+conditioner:
+  mode: question
+  question_input: bare
+  include_bos: false
+  max_tokens: 128
+  hidden_size: 512
+  attention_heads: 8
+readout:
+  mode: single_pass
+training:
+  steps: 40000
+  global_batch_size: 64
+  seed: 42
+  warmup_steps: 200
+  scheduler: cosine
+  min_lr_ratio: 0.1
+  gradient_checkpointing: true
+  train_vision_encoder: false
+  train_merger: true
+  precision: bf16
+  loss_normalization: per_example_answer_tokens
+  supervision: terminal
+  geometric_ratio: null
+  optimizer:
+    name: adamw
+    beta1: 0.9
+    beta2: 0.99
+    epsilon: 1.0e-8
+    weight_decay: 1.0e-4
+    max_grad_norm: 1.0
+    lora_lr: 1.0e-4
+    merger_lr: 5.0e-5
+    conditioner_lr: 1.0e-4
+generation:
+  max_new_tokens: 64
+  do_sample: false

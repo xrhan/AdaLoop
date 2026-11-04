@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adaloop-common"
+version = "1.0.0"
+description = "Framework-neutral contracts, VisRO data and evaluation for AdaLoop"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [
+  { name = "Xinran Nicole Han" },
+  { name = "Yiyang Lu" },
+  { name = "Katelyn Gan" },
+  { name = "Todd Zickler" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: POSIX :: Linux",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "visro @ git+https://github.com/Lyy-iiis/VisRO.git@de73c5679cc4409e5aeb8dbcfedb27171a6b8f63",
+]
+
+[project.urls]
+Paper = "https://arxiv.org/abs/2610.21323"
+
+[tool.setuptools.packages.find]
+include = ["adaloop_common*"]

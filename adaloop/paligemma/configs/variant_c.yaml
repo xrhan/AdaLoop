@@ -1,0 +1,85 @@
+schema_version: 1
+backend: paligemma2-jax
+base_model:
+  id: google/paligemma2-3b-mix-448
+  format: big_vision_npz
+  sha256: 2d426f6d23ec5ecd9b49f01a815bfb3ce5a373fa98bd154568cc402dcf8fc049
+  size_bytes: 6065970800
+tokenizer:
+  format: sentencepiece
+  sha256: 8986bb4f423f07f8c7f70d0dbe3526fb2316056c17bae71b1ea975e77a168fc6
+  size_bytes: 4264023
+backbone:
+  image_size: 448
+  vision_variant: So400m/14
+  vision_depth: 27
+  language_variant: gemma2_2b
+  vocab_size: 257152
+variant: c
+adaptive_span: [3, 15]
+train_depth: 3
+vision_round_mode: latent_carry
+lora:
+  rank: 64
+  alpha: 128
+  dropout: 0.0
+  target_modules: [q, kv, o]
+  layers: all
+  seed: 0
+conditioner:
+  mode: question
+  question_input: bare
+  include_bos: false
+  max_tokens: 128
+  hidden_size: 512
+  attention_heads: 8
+  detach: true
+adaln:
+  mode: independent
+  hidden_size: 128
+  variant: full
+  zero_init: true
+readout:
+  mode: interleaved_drafts
+  question_mode: each_round
+  draft_max_tokens: 24
+  condition_mode: question_only
+  rollout_engine: reprefill
+  suppress_special_draft_tokens: true
+  separator: newline
+  max_length: 8192
+preprocessing:
+  image_size: 448
+  interpolation: bicubic
+  normalization: minus_one_to_one
+  max_text_tokens: 256
+  eval_max_text_tokens: 256
+  prompt_template: "answer en {question}"
+  eval_prompt_template: "{question}"
+  separator: newline
+training:
+  steps: 30000
+  global_batch_size: 64
+  seed: 0
+  warmup_steps: 200
+  scheduler: cosine
+  min_lr_ratio: 0.1
+  precision: bf16
+  train_vision_encoder: false
+  train_connector: true
+  loss_normalization: per_example
+  supervision: deep_geometric
+  geometric_ratio: 0.8
+  optimizer:
+    name: adamw
+    beta1: 0.9
+    beta2: 0.999
+    epsilon: 1.0e-8
+    weight_decay: 1.0e-4
+    max_grad_norm: 1.0
+    lora_lr: 1.0e-4
+    connector_lr: 3.0e-5
+    conditioner_lr: 1.0e-4
+generation:
+  max_new_tokens: 128
+  do_sample: false

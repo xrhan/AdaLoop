@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+build/
+dist/
+checkpoints/
+outputs/
+wandb/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+# Default dataset locations of the AdaLoop recipes (anchored: package data/ modules stay tracked).
+/data/
+/downloads/

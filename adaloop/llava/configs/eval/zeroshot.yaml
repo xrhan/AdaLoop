@@ -1,0 +1,24 @@
+# Zero-shot: the stage-2 base model itself, no adapter, depth 1. VisRO evaluation
+# (eval and ood splits); the loop mode and depth semantics come from the checkpoint's config.json.
+paths:
+  base_model: checkpoints/llava-v1.5-7b-448-s2
+  vision_tower: checkpoints/clip-vit-large-patch14-336
+eval:
+  name: zeroshot                   # the paper's name: outputs/eval/<name>/<split>/
+  adapter: null                    # null = the base model itself
+  visro_root: data/VisRO           # downloaded VisRO dataset (holds tasks/)
+  tasks: core6                     # the paper's six tasks
+  splits: [eval, ood]              # 3,600 items each
+  per_cell: 0                      # at most N items per (task, difficulty) cell; 0 = all
+  prompt_style: question           # the bare question (the paper's LLaVA evaluation)
+  max_depth: 1                     # answers at the fixed depths 1..max_depth
+  p1_max_depth: 0                  # p=1 stopping over depths 1..T; 0 = none
+  dtype: float16                   # LM and CLIP in fp16; the loop core stays fp32
+  attn_implementation: sdpa
+  batch_size: 16
+  max_new_tokens: 32
+  do_sample: false                 # greedy
+  padding_side: left
+  shard: batch                     # batch: rank r takes batches r::world (same batch composition, hence
+                                   # the same outputs, as one process) | depth: rank r takes depths r::world
+  output_dir: outputs/eval/${eval.name}   # <split>/depth<d>.jsonl, p1_T<T>.jsonl, summary.json, results.md

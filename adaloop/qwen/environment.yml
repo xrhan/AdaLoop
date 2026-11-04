@@ -1,0 +1,18 @@
+name: adaloop-qwen
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      # The pytorch conda channel stops at 2.5.1. PyPI's Linux x86_64 torch
+      # 2.6.0 wheel is the CUDA 12.4 build and pulls the CUDA runtime wheels.
+      - torch==2.6.0
+      - torchvision==0.21.0
+      - accelerate==1.7.0
+      - numpy==1.26.4
+      - peft==0.17.1
+      - Pillow==10.4.0
+      - PyYAML==6.0.2
+      - safetensors==0.4.5
+      - transformers==4.57.1

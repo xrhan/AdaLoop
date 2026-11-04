@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adaloop-paligemma"
+version = "1.0.0"
+description = "PaliGemma2/JAX backend for AdaLoop"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [
+  { name = "Xinran Nicole Han" },
+  { name = "Yiyang Lu" },
+  { name = "Katelyn Gan" },
+  { name = "Todd Zickler" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: POSIX :: Linux",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "adaloop-common==1.0.0",
+  "huggingface-hub>=0.24",
+  "msgpack>=1.0",
+  "numpy>=1.26",
+  "Pillow>=10.0",
+  "PyYAML>=6.0",
+  "sentencepiece>=0.2",
+]
+
+[project.urls]
+Paper = "https://arxiv.org/abs/2610.21323"
+
+[project.optional-dependencies]
+# Tested stacks. Where it installs, the one the python=3.10 environment-*.yml
+# files resolve to; JAX 0.6.2 has no Python 3.14 wheels, so newer interpreters
+# get the newest stack the code was also validated with.
+runtime = [
+  "einops==0.8.2",
+  "optax==0.2.8",
+  "flax==0.10.7; python_version < '3.14'",
+  "jax==0.6.2; python_version < '3.14'",
+  "orbax-checkpoint==0.11.39; python_version < '3.14'",
+  "flax==0.12.10; python_version >= '3.14'",
+  "jax==0.11.2; python_version >= '3.14'",
+  "orbax-checkpoint==0.12.7; python_version >= '3.14'",
+]
+
+[project.scripts]
+adaloop-paligemma-train = "adaloop_paligemma.cli.train:main"
+adaloop-paligemma-infer = "adaloop_paligemma.cli.infer:main"
+adaloop-paligemma-eval = "adaloop_paligemma.cli.evaluate:main"
+adaloop-paligemma-inspect = "adaloop_paligemma.cli.inspect_checkpoint:main"
+
+[tool.setuptools.packages.find]
+include = ["adaloop_paligemma*"]
+
+[tool.setuptools.package-data]
+adaloop_paligemma = ["py.typed"]

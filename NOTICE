@@ -1,0 +1,117 @@
+AdaLoop
+Copyright 2026 The AdaLoop Authors
+
+This product includes code adapted from the projects below, which are licensed
+under the Apache License, Version 2.0. Each adapted source file retains the
+upstream copyright and license notice and states how the AdaLoop Authors
+modified it.
+
+Big Vision (https://github.com/google-research/big_vision)
+Copyright 2024 Big Vision Authors.
+The PaliGemma backend includes code adapted from Big Vision commit
+0127fb6b337ee2a27bf4e54dea79cff176527356:
+  adaloop/paligemma/adaloop_paligemma/model/gemma_lora.py, from
+    big_vision/models/ppp/gemma.py and
+    big_vision/models/proj/paligemma/gemma_bv.py
+  adaloop/paligemma/adaloop_paligemma/model/vision.py, from
+    big_vision/models/vit.py
+  adaloop/paligemma/adaloop_paligemma/model/readouts.py, from
+    big_vision/models/proj/paligemma/paligemma.py
+  adaloop/paligemma/adaloop_paligemma/runtime.py, from
+    big_vision/utils.py
+
+Transformers (https://github.com/huggingface/transformers)
+Copyright 2025 The Qwen Team and The HuggingFace Inc. team. All rights reserved.
+The Qwen backend includes code adapted from Transformers 4.57.1:
+  adaloop/qwen/adaloop_qwen/model/vision.py, from
+    src/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py
+Copyright 2021 The OpenAI Team Authors and The HuggingFace Team. All rights reserved.
+The LLaVA backend includes code adapted from the CLIP model of Transformers
+4.57.6:
+  adaloop/llava/adaloop_llava/model/multimodal_encoder/looped_clip.py, from
+    src/transformers/models/clip/modeling_clip.py
+
+LLaVA (https://github.com/haotian-liu/LLaVA)
+Copyright 2023 Haotian Liu
+The LLaVA backend includes code adapted from LLaVA:
+  adaloop/llava/adaloop_llava/constants.py, from
+    llava/constants.py
+  adaloop/llava/adaloop_llava/conversation.py, from
+    llava/conversation.py
+  adaloop/llava/adaloop_llava/mm_utils.py, from
+    llava/mm_utils.py
+  adaloop/llava/adaloop_llava/model/llava_arch.py, from
+    llava/model/llava_arch.py
+  adaloop/llava/adaloop_llava/model/llava_llama.py, from
+    llava/model/language_model/llava_llama.py
+  adaloop/llava/adaloop_llava/model/loading.py, from
+    llava/model/builder.py
+  adaloop/llava/adaloop_llava/model/multimodal_encoder/builder.py, from
+    llava/model/multimodal_encoder/builder.py
+  adaloop/llava/adaloop_llava/model/multimodal_encoder/clip_encoder.py, from
+    llava/model/multimodal_encoder/clip_encoder.py
+  adaloop/llava/adaloop_llava/model/multimodal_projector/builder.py, from
+    llava/model/multimodal_projector/builder.py
+  adaloop/llava/adaloop_llava/training/trainer.py, from
+    llava/train/llava_trainer.py
+
+FastChat (https://github.com/lm-sys/FastChat) and Stanford Alpaca
+(https://github.com/tatsu-lab/stanford_alpaca)
+Copyright 2023 Rohan Taori, Ishaan Gulrajani, Tianyi Zhang, Yann Dubois, Xuechen Li
+The LLaVA backend includes code adapted from LLaVA's training script, which
+adopts FastChat and Stanford Alpaca code under the copyright above:
+  adaloop/llava/adaloop_llava/data/preprocess.py, from
+    llava/train/train.py
+
+The runtime dependencies, including PyTorch, Transformers, PEFT, Accelerate,
+SentencePiece, JAX, Flax, Optax, and Orbax, are installed separately under
+their own licenses and are not bundled with AdaLoop.
+
+Qwen2.5-VL is developed by the Qwen team and distributed separately under its
+own model license. AdaLoop does not redistribute the Qwen2.5-VL base weights.
+Users are responsible for complying with the license of every base model and
+checkpoint they download.
+
+Qwen and Hugging Face names and marks belong to their respective owners. No
+endorsement is implied.
+
+PaliGemma 2 is developed by Google and distributed separately under its model
+license. AdaLoop does not redistribute PaliGemma base weights or tokenizer
+assets. PaliGemma and Google names and marks belong to their respective owners;
+no endorsement is implied.
+
+The LLaVA backend builds on Vicuna-7B-v1.5, which is subject to the Llama 2
+Community License Agreement. The LLaVA-1.5 stage-2 base model and every
+checkpoint derived from it, including AdaLoop checkpoints trained on it, are
+subject to the same license. CLIP ViT-L/14-336 is provided by OpenAI under its
+own terms. The LLaVA replay data derives from the LLaVA and LLaVA-NeXT
+instruction data and follows the licenses of its source datasets. This
+repository contains no model weights; the stage-2 base released with the
+AdaLoop checkpoints is distributed under the Llama 2 Community License
+Agreement, and CLIP weights are not redistributed. LLaVA, Vicuna, Llama, CLIP,
+and OpenAI names and marks belong to their respective owners; no endorsement is
+implied.
+
+VisRO example figure
+The figure assets/visro.png shows generated VisRO examples. The VisRO dataset
+is distributed under CC BY-SA 4.0. Its generators and original assets live in
+the separate VisRO repository, whose NOTICE and adjacent asset license files
+retain the full notices. The asset sources include:
+
+  Material Design Icons (https://github.com/Templarian/MaterialDesign-SVG)
+    Apache-2.0; Material Design Icons by Pictogrammers.
+  game-icons.net icons (https://github.com/game-icons/icons)
+    CC BY 3.0; game-icons.net and each icon's individual author. The pinned
+    VisRO icon manifest retains each author's identity.
+  OpenMoji graphics (https://github.com/hfg-gmuend/openmoji)
+    CC BY-SA 4.0; OpenMoji - the open-source emoji and icon project, HfG
+    Schwaebisch Gmuend and contributors.
+  DejaVu Sans fonts (https://dejavu-fonts.github.io/)
+    Original notices and permission terms; see assets/fonts/LICENSE-DejaVu.txt
+    in the VisRO repository.
+  Fluent Emoji (https://github.com/microsoft/fluentui-emoji)
+    MIT; Microsoft Corporation.
+
+Generators may recolor, crop, rotate, mirror, edit, overlap or composite the
+original resources. Attribution and applicable asset licenses also accompany
+generated examples; no single permissive license for every image is asserted.

@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adaloop-llava"
+version = "1.0.0"
+description = "LLaVA-1.5 backend for AdaLoop"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [
+  { name = "Xinran Nicole Han" },
+  { name = "Yiyang Lu" },
+  { name = "Katelyn Gan" },
+  { name = "Todd Zickler" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: POSIX :: Linux",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "adaloop-common==1.0.0",
+  "PyYAML>=6.0",
+]
+
+[project.urls]
+Paper = "https://arxiv.org/abs/2610.21323"
+
+[project.optional-dependencies]
+# Pinned stack. Transformers is pinned to 4.57.6: the paper's loss normalization depends on
+# how its Trainer passes loss keyword arguments to the model.
+gpu = [
+  "accelerate==1.15.0",
+  "numpy==1.26.4",
+  "packaging==25.0",
+  "peft==0.17.1",
+  "Pillow==11.3.0",
+  "protobuf==6.33.6",
+  "safetensors==0.6.2",
+  "sentencepiece==0.2.0",
+  "tokenizers==0.22.2",
+  "torch==2.6.0",
+  "transformers==4.57.6",
+]
+flash = [
+  "flash-attn==2.7.4.post1",
+]
+
+[project.scripts]
+adaloop-llava-train = "adaloop_llava.cli.train:main"
+adaloop-llava-infer = "adaloop_llava.cli.infer:main"
+adaloop-llava-inspect = "adaloop_llava.cli.inspect_checkpoint:main"
+adaloop-llava-convert = "adaloop_llava.cli.convert_checkpoint:main"
+adaloop-llava-eval = "adaloop_llava.cli.evaluate:main"
+
+[tool.setuptools.packages.find]
+include = ["adaloop_llava*"]
+
+[tool.setuptools.package-data]
+adaloop_llava = ["py.typed"]

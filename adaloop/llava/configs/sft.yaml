@@ -1,0 +1,89 @@
+# SFT for LLaVA-1.5-7B at 448 px: LoRA on the language model plus the projector; plain CLIP tower
+# (no loop). Trained on the six core VisRO tasks + LLaVA-NeXT replay. This file lists every key of
+# the recipe.
+schema_version: 1
+backend: llava-1.5
+variant: sft                                     # sft | adaln | a | b | c
+base_model:                                      # read-only identity of the stage-2 base; portable
+  id: llava-v1.5-7b-448-s2                       # checkpoints pin its files by size and sha256
+  format: llava_hf_safetensors
+vision_tower:                                    # read-only identity of the CLIP tower
+  id: openai/clip-vit-large-patch14-336
+  revision: ce19dc912ca5cd21c8a653c79e251e808ccabcd1
+run_name: sft                                    # the paper's run name
+paths:
+  base_model: checkpoints/llava-v1.5-7b-448-s2   # stage-2 LLaVA-1.5-7B trained at 448px with 2x2 pooling
+  vision_tower: checkpoints/clip-vit-large-patch14-336   # openai/clip-vit-large-patch14-336
+  output_root: outputs
+  output_dir: null                               # null: <output_root>/<run_name>
+data:
+  visro_root: data/VisRO                         # downloaded VisRO dataset (holds tasks/)
+  tasks: core6                                   # the paper's six tasks: 600,000 training rows
+  difficulty: null                               # null = every level
+  replay_jsonl: data/llava_replay/replay.jsonl   # pooled after the VisRO rows, equal row weight
+  replay_image_root: null                        # null = the JSONL's directory
+  data_limit: 0                                  # 0 = use every row
+  image_aspect_ratio: pad                        # pad to square with the CLIP mean colour
+  condition_max_length: 128                      # question condition: BOS + up to 127 tokens
+model:
+  conv_template: v1                              # Vicuna v1 chat template
+  model_max_length: 2048
+  attn_implementation: flash_attention_2         # LM attention for training (sdpa also works)
+  vision:
+    select_layer: -2                             # LLaVA reads hidden_states[-2] -> 23 executed layers
+    select_feature: patch                        # drop CLS
+    input_res: 448                               # position embeddings retargeted 24x24 -> 32x32
+    spatial_pool: 2                              # 2x2 average pool -> 256 image tokens
+  projector: mlp2x_gelu
+  mm_use_im_start_end: false
+  mm_use_im_patch_token: false
+  loop:
+    mode: none                                   # none | single_pass | adaloop (must match variant)
+    # The keys below are inert without a loop; they are kept so that every recipe lists the same keys.
+    band: [2, 8]
+    steps: null
+    step_embed: null
+    fused_readout: null
+    readout: last
+    deep_sup_weight: "geometric:0.6"
+    use_adaln: true
+    condition_dim: 512
+    adaln_hidden_dim: 128
+    step_embed_max_steps: 16
+lora:
+  enable: true
+  r: 128
+  alpha: 256
+  dropout: 0.05
+  bias: none
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+  target_scope: language_model                   # never the vision tower, loop core, projector or lm_head
+optim:
+  name: adamw_torch
+  lr: 1.0e-4                                     # LoRA and loop core
+  mm_projector_lr: 5.0e-5                        # projector
+  weight_decay: 0.0
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  max_grad_norm: 1.0
+  lr_scheduler: cosine
+  warmup_ratio: 0.03                             # 1200 of 40000 steps
+train:
+  seed: 42
+  max_steps: 40000
+  per_device_batch_size: 8                       # global batch 64 on 8 GPUs
+  grad_accum: 1
+  bf16: true                                     # false: fp32 language model, fp16 CLIP tower (as the paper recipe)
+  tf32: true
+  gradient_checkpointing: true                   # always non-reentrant
+  save_steps: 1000
+  save_total_limit: 1
+  save_safetensors: true
+  logging_steps: 1
+  dataloader_num_workers: 4                      # does not change the sample order
+  group_by_modality_length: false
+  loss_normalization: rank_mean                     # rank_mean (paper recipe, LLaVA-specific) | token_mean
+  rank_mean_scale: 8                           # = world_size x grad_accum of the paper runs (8 x 1)
+  ddp_find_unused_parameters: false
+  resume: auto                                   # auto | never | <checkpoint dir>
+  debug_grad_arrival: false

@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adaloop-qwen"
+version = "1.0.0"
+description = "Qwen2.5-VL backend for AdaLoop"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [
+  { name = "Xinran Nicole Han" },
+  { name = "Yiyang Lu" },
+  { name = "Katelyn Gan" },
+  { name = "Todd Zickler" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: POSIX :: Linux",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "adaloop-common==1.0.0",
+  "PyYAML>=6.0",
+]
+
+[project.urls]
+Paper = "https://arxiv.org/abs/2610.21323"
+
+[project.optional-dependencies]
+gpu = [
+  "accelerate==1.7.0",
+  "numpy==1.26.4",
+  "peft==0.17.1",
+  "Pillow==10.4.0",
+  "safetensors==0.4.5",
+  "torch==2.6.0",
+  "torchvision==0.21.0",
+  "transformers==4.57.1",
+]
+flash = [
+  "flash-attn==2.7.4.post1",
+]
+
+[project.scripts]
+adaloop-qwen-train = "adaloop_qwen.cli.train:main"
+adaloop-qwen-infer = "adaloop_qwen.cli.infer:main"
+adaloop-qwen-eval = "adaloop_qwen.cli.evaluate:main"
+adaloop-qwen-inspect = "adaloop_qwen.cli.inspect_checkpoint:main"
+
+[tool.setuptools.packages.find]
+include = ["adaloop_qwen*"]

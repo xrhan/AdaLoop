@@ -1,0 +1,23 @@
+name: adaloop-llava
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      # The pytorch conda channel stops at 2.5.1. PyPI's Linux x86_64 torch
+      # 2.6.0 wheel is the CUDA 12.4 build and pulls the CUDA runtime wheels.
+      # The LLaVA backend pins transformers 4.57.6, so it needs an environment
+      # of its own (the Qwen backend pins 4.57.1).
+      - torch==2.6.0
+      - accelerate==1.15.0
+      - numpy==1.26.4
+      - packaging==25.0
+      - peft==0.17.1
+      - Pillow==11.3.0
+      - protobuf==6.33.6
+      - PyYAML==6.0.3
+      - safetensors==0.6.2
+      - sentencepiece==0.2.0
+      - tokenizers==0.22.2
+      - transformers==4.57.6

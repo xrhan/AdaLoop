@@ -1,0 +1,19 @@
+name: adaloop-paligemma-tpu
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # The runtime extra's Python < 3.14 pins.
+      - "jax[tpu]==0.6.2"
+      - einops==0.8.2
+      - flax==0.10.7
+      - optax==0.2.8
+      - orbax-checkpoint==0.11.39
+      - huggingface-hub==2.2.0
+      - msgpack==1.2.0
+      - numpy==2.2.6
+      - Pillow==12.3.0
+      - PyYAML==6.0.3
+      - sentencepiece==0.2.2
